@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">Cast Fun</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="play_services_available">Yay</string>
+    <string name="play_services_unavailable">Nay</string>
 
 </resources>
