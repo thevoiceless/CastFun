@@ -1,4 +1,4 @@
-package com.thevoiceless.castfun.test;
+package com.thevoiceless.castfun.cast;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,10 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.thevoiceless.castfun.test.R;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -75,7 +75,9 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onPause() {
-        mediaRouter.removeCallback(mediaCallback);
+        if (isFinishing()) {
+            mediaRouter.removeCallback(mediaCallback);
+        }
 
         super.onPause();
     }
