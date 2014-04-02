@@ -1,0 +1,6 @@
+<resources>
+
+    <!-- Must use AppCompat to work with ActionBarActivity -->
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar"></style>
+
+</resources>

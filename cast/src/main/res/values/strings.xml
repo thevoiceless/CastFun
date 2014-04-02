@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Cast Fun</string>
+    <string name="menu_action_settings">Settings</string>
+    <string name="menu_action_cast">Cast</string>
+    <string name="error">Error</string>
+
+    <string name="play_services_available">Google Play services is available</string>
+    <string name="play_services_unavailable">Google Play services is unavailable</string>
+
+    <string name="receiver_id">E622D3D2</string>
+
+</resources>
