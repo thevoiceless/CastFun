@@ -75,9 +75,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onPause() {
-        if (isFinishing()) {
-            mediaRouter.removeCallback(mediaCallback);
-        }
+        mediaRouter.removeCallback(mediaCallback);
 
         super.onPause();
     }

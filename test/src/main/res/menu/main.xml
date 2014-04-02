@@ -5,7 +5,6 @@
         android:id="@+id/action_cast"
         android:title="@string/menu_action_cast"
         app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
-        android:actionViewClass="android.support.v7.app.MediaRouteButton"
         app:showAsAction="always" />
 
 
