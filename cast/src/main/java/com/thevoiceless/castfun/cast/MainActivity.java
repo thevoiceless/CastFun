@@ -17,6 +17,10 @@ import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.cast.MediaStatus;
+import com.google.android.gms.cast.RemoteMediaPlayer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,6 +44,7 @@ public class MainActivity extends ActionBarActivity {
     private GoogleApiClient.ConnectionCallbacks connectionCallbacks;
     private GoogleApiClient.OnConnectionFailedListener connectionFailedListener;
     private MyCustomChannel customChannel;
+    private RemoteMediaPlayer remoteMediaPlayer;
 
     private String sessionId;
     private boolean waitingForReconnect;
@@ -111,6 +116,27 @@ public class MainActivity extends ActionBarActivity {
                 }
             }
         };
+
+        // Use a media channel to play media on the receiver
+        remoteMediaPlayer = new RemoteMediaPlayer();
+        remoteMediaPlayer.setOnStatusUpdatedListener(new RemoteMediaPlayer.OnStatusUpdatedListener() {
+            @Override
+            public void onStatusUpdated() {
+                MediaStatus mediaStatus = remoteMediaPlayer.getMediaStatus();
+                Log.i(TAG, String.format("Media status: %s", mediaStatus));
+                boolean isPlaying = ((mediaStatus != null) && (mediaStatus.getPlayerState() == MediaStatus.PLAYER_STATE_PLAYING));
+            }
+        });
+        remoteMediaPlayer.setOnMetadataUpdatedListener(new RemoteMediaPlayer.OnMetadataUpdatedListener() {
+            @Override
+            public void onMetadataUpdated() {
+                MediaInfo mediaInfo = remoteMediaPlayer.getMediaInfo();
+                Log.i(TAG, String.format("Media info: %s", mediaInfo));
+                if (mediaInfo != null) {
+                    MediaMetadata metadata = mediaInfo.getMetadata();
+                }
+            }
+        });
     }
 
     @Override
@@ -293,11 +319,25 @@ public class MainActivity extends ActionBarActivity {
 
         private void connectChannels() {
             customChannel = new MyCustomChannel();
+
             try {
+                Cast.CastApi.setMessageReceivedCallbacks(apiClient, remoteMediaPlayer.getNamespace(), remoteMediaPlayer);
                 Cast.CastApi.setMessageReceivedCallbacks(apiClient, customChannel.getNameSpace(), customChannel);
             } catch (IOException e) {
-                Log.e(TAG, "Failed to create custom channel", e);
+                Log.e(TAG, "Failed to set channels", e);
             }
+
+            remoteMediaPlayer.requestStatus(apiClient)
+                    .setResultCallback(new ResultCallback<RemoteMediaPlayer.MediaChannelResult>() {
+                        @Override
+                        public void onResult(RemoteMediaPlayer.MediaChannelResult result) {
+                            if (result.getStatus().isSuccess()) {
+                                Log.i(TAG, "Successfully created media player");
+                            } else {
+                                Log.e(TAG, "Failed to get media player status");
+                            }
+                        }
+                    });
         }
     }
 
