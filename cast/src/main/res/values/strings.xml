@@ -10,5 +10,6 @@
     <string name="play_services_unavailable">Google Play services is unavailable</string>
 
     <string name="receiver_id">E622D3D2</string>
+    <string name="custom_namespace">urn:x-cast:com.thevoiceless.castfun</string>
 
 </resources>
